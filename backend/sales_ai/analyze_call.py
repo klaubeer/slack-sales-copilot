@@ -7,37 +7,55 @@ def analyze_call(transcript):
     prompt = f"""
 Você é um Sales Coach especialista em vendas SaaS B2B.
 
-Analise a call de vendas abaixo.
+Analise a call abaixo e gere uma análise estratégica do deal.
 
 TRANSCRIÇÃO:
 {transcript}
 
-Produza uma análise estratégica do deal usando esta estrutura:
+A resposta deve ser:
+- clara
+- objetiva
+- fácil de ler no Slack
+- máximo ~200 palavras
+- usar bullet points
+- evitar parágrafos longos
 
-ESTÁGIO DO DEAL
-(ex: discovery, qualificação, avaliação, negociação)
+Estrutura:
 
-CHAMPION IDENTIFICADO
-(quem parece defender a solução internamente)
+DEAL STAGE
+(Discovery / Evaluation / Negotiation)
 
-POSSÍVEL ECONOMIC BUYER
+CHAMPION
+(quem parece apoiar a solução)
+
+ECONOMIC BUYER
 (quem provavelmente controla o orçamento)
 
-PRINCIPAIS DORES DO CLIENTE
+DORES PRINCIPAIS
+• item
+• item
 
 OBJEÇÕES DETECTADAS
+• item
+• item
 
 SINAIS DE COMPRA
+• item
+• item
 
 RISCOS DO DEAL
+• item
+• item
 
 PROBABILIDADE DE FECHAMENTO
 (0–100%)
 
-PRÓXIMA AÇÃO RECOMENDADA
-(o que o vendedor deve fazer para avançar o deal)
+PRÓXIMO PASSO RECOMENDADO
+(ação concreta para avançar o deal)
 
 PERGUNTAS QUE O VENDEDOR DEVERIA TER FEITO
+• pergunta
+• pergunta
 """
 
     response = client.chat.completions.create(
@@ -45,5 +63,9 @@ PERGUNTAS QUE O VENDEDOR DEVERIA TER FEITO
         temperature=0.3,
         messages=[{"role":"user","content":prompt}]
     )
+
+    print("Prompt tokens:", response.usage.prompt_tokens)
+    print("Completion tokens:", response.usage.completion_tokens)
+    print("Total tokens:", response.usage.total_tokens)
 
     return response.choices[0].message.content
