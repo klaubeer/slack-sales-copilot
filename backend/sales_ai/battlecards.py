@@ -5,27 +5,51 @@ client = OpenAI()
 def generate_battlecard(competitor):
 
     prompt = f"""
-Você é um especialista em inteligência competitiva em SaaS.
+Você é um especialista em inteligência competitiva em SaaS B2B.
 
-Crie um battlecard de vendas contra este concorrente:
+Crie um battlecard de vendas contra o concorrente abaixo.
 
 CONCORRENTE: {competitor}
 
-Estrutura da resposta:
+A resposta deve ser:
+- curta
+- prática para uso por vendedores
+- otimizada para leitura no Slack
+- usar bullet points
+- evitar parágrafos longos
+- máximo ~150 palavras
 
-RESUMO DO CONCORRENTE
+Estrutura obrigatória:
+
+BATTLECARD — {competitor}
+
+RESUMO
+(1–2 frases)
 
 PONTOS FORTES
+• item
+• item
+• item
 
 PONTOS FRACOS
+• item
+• item
+• item
 
-EM QUE SITUAÇÕES ELES GANHAM DEALS
+QUANDO ELES GANHAM
+• situação
+• situação
 
-COMO POSICIONAR SUA SOLUÇÃO CONTRA ELES
+COMO POSICIONAR CONTRA
+• argumento de venda
+• argumento de venda
 
-PERGUNTAS QUE O VENDEDOR DEVE FAZER AO CLIENTE
+PERGUNTAS PARA O CLIENTE
+• pergunta
+• pergunta
 
-UMA PERGUNTA "KILLER" QUE EXPÕE UMA FRAQUEZA DO CONCORRENTE
+PERGUNTA KILLER
+(uma pergunta curta que exponha fraqueza do concorrente)
 """
 
     response = client.chat.completions.create(
