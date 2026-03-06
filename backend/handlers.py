@@ -1,4 +1,4 @@
-from slack_agent import app
+from backend.slack_agent import app
 
 @app.message("hello")
 def say_hello(message, say):
