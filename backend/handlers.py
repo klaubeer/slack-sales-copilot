@@ -40,6 +40,7 @@ Responda em JSON neste formato:
 
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
+        temperature=0,
         messages=[{"role": "user", "content": prompt}]
     )
 
