@@ -5,22 +5,22 @@ client = OpenAI()
 def analyze_call(transcript):
 
     prompt = f"""
-Você é um Sales Coach AI especialista em vendas SaaS B2B.
+Você é um Sales Coach especialista em vendas SaaS B2B.
 
-Analise a call de vendas abaixo e produza uma análise estratégica do deal.
+Analise a call de vendas abaixo.
 
-TRANSCRIPT:
+TRANSCRIÇÃO:
 {transcript}
 
-Responda em português usando EXATAMENTE esta estrutura:
+Produza uma análise estratégica do deal usando esta estrutura:
 
-DEAL STAGE
-(ex: discovery, qualification, evaluation, negotiation)
+ESTÁGIO DO DEAL
+(ex: discovery, qualificação, avaliação, negociação)
 
 CHAMPION IDENTIFICADO
-(quem parece apoiar a solução)
+(quem parece defender a solução internamente)
 
-ECONOMIC BUYER
+POSSÍVEL ECONOMIC BUYER
 (quem provavelmente controla o orçamento)
 
 PRINCIPAIS DORES DO CLIENTE
@@ -35,13 +35,14 @@ PROBABILIDADE DE FECHAMENTO
 (0–100%)
 
 PRÓXIMA AÇÃO RECOMENDADA
-(ação específica para avançar o deal)
+(o que o vendedor deve fazer para avançar o deal)
 
 PERGUNTAS QUE O VENDEDOR DEVERIA TER FEITO
 """
 
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
+        temperature=0.3,
         messages=[{"role":"user","content":prompt}]
     )
 
