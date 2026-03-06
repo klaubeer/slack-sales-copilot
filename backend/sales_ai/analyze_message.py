@@ -5,16 +5,27 @@ client = OpenAI()
 def analyze_message(text):
 
     prompt = f"""
-Analyze this customer message from a sales perspective.
+You are a B2B SaaS sales strategist.
 
+Analyze the following prospect message.
+
+MESSAGE:
 {text}
 
-Return:
+Return the analysis in this structure:
 
-Deal risk (LOW / MEDIUM / HIGH)
-Detected objections
-Buying signals
-Suggested next step
+DEAL RISK
+(LOW / MEDIUM / HIGH)
+
+LIKELY INTENT OF THE PROSPECT
+
+DETECTED OBJECTIONS
+
+BUYING SIGNALS
+
+WHAT THE PROSPECT IS REALLY WORRIED ABOUT
+
+BEST NEXT ACTION FOR THE SALES REP
 """
 
     response = client.chat.completions.create(
