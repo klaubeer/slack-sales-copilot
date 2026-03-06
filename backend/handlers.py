@@ -1,5 +1,14 @@
 from backend.slack_agent import app
 
-@app.message("hello")
-def say_hello(message, say):
-    say("Hello 👋")
+@app.event("message")
+def handle_message(body, say):
+
+    event = body["event"]
+
+    # evita loop com mensagens do próprio bot
+    if "bot_id" in event:
+        return
+
+    text = event.get("text", "")
+
+    say(f"Recebi: {text}")
