@@ -5,22 +5,22 @@ client = OpenAI()
 def generate_reply(text):
 
     prompt = f"""
-You are a senior B2B sales rep.
+Você é um vendedor B2B experiente.
 
-A prospect sent this message:
+Um lead enviou esta mensagem:
 
 {text}
 
-Your task:
-- identify the objection
-- write a reply that moves the deal forward
-- keep it short and natural
+Analise a mensagem e responda em português com:
 
-Return:
+OBJEÇÃO IDENTIFICADA
+(resuma o problema do cliente)
 
-Objection:
-Suggested reply:
-Goal of reply:
+RESPOSTA SUGERIDA
+(mensagem curta e natural que avance o negócio)
+
+OBJETIVO DA RESPOSTA
+(ex: marcar reunião, avançar para demo, etc)
 """
 
     response = client.chat.completions.create(
