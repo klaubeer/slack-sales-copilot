@@ -4,31 +4,37 @@ from backend.sales_ai.battlecards import generate_battlecard
 from backend.sales_ai.analyze_message import analyze_message
 
 
-@app.message("/reply")
-def reply_handler(message, say):
+@app.event("message")
+def handle_message(body, say):
 
-    text = message["text"].replace("/reply", "").strip()
+    event = body.get("event", {})
 
-    response = generate_reply(text)
+    # evita loop do próprio bot
+    if event.get("subtype") == "bot_message":
+        return
 
-    say(response)
+    text = event.get("text", "").strip().lower()
 
+    if not text:
+        return
 
-@app.message("/battlecard")
-def battlecard_handler(message, say):
+    # comando reply
+    if text.startswith("reply"):
+        query = text.replace("reply", "", 1).strip()
+        result = generate_reply(query)
+        say(result)
+        return
 
-    competitor = message["text"].replace("/battlecard", "").strip()
+    # comando battlecard
+    if text.startswith("battlecard"):
+        query = text.replace("battlecard", "", 1).strip()
+        result = generate_battlecard(query)
+        say(result)
+        return
 
-    response = generate_battlecard(competitor)
-
-    say(response)
-
-
-@app.message("/analyze")
-def analyze_handler(message, say):
-
-    text = message["text"].replace("/analyze", "").strip()
-
-    response = analyze_message(text)
-
-    say(response)
+    # comando analyze
+    if text.startswith("analyze"):
+        query = text.replace("analyze", "", 1).strip()
+        result = analyze_message(query)
+        say(result)
+        return
