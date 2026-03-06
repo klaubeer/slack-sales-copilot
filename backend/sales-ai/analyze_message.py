@@ -5,16 +5,21 @@ client = OpenAI()
 def analyze_message(text):
 
     prompt = f"""
-Analyze this customer message from a sales perspective.
+Analise esta mensagem de um cliente em um processo de vendas:
 
 {text}
 
-Return:
+Responda em português com:
 
-Deal risk (LOW / MEDIUM / HIGH)
-Detected objections
-Buying signals
-Suggested next step
+RISCO DO NEGÓCIO
+(BAIXO / MÉDIO / ALTO)
+
+OBJEÇÕES DETECTADAS
+
+SINAIS DE COMPRA
+
+PRÓXIMO PASSO SUGERIDO
+(o que o vendedor deve fazer agora)
 """
 
     response = client.chat.completions.create(
