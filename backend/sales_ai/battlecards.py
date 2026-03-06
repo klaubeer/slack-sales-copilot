@@ -24,32 +24,18 @@ Estrutura obrigatória:
 BATTLECARD — {competitor}
 
 RESUMO
-(1–2 frases)
 
 PONTOS FORTES
-• item
-• item
-• item
 
 PONTOS FRACOS
-• item
-• item
-• item
 
 QUANDO ELES GANHAM
-• situação
-• situação
 
 COMO POSICIONAR CONTRA
-• argumento de venda
-• argumento de venda
 
 PERGUNTAS PARA O CLIENTE
-• pergunta
-• pergunta
 
 PERGUNTA KILLER
-(uma pergunta curta que exponha fraqueza do concorrente)
 """
 
     response = client.chat.completions.create(
@@ -57,5 +43,7 @@ PERGUNTA KILLER
         temperature=0.3,
         messages=[{"role":"user","content":prompt}]
     )
+
+    print("Tokens usados:", response.usage.total_tokens)
 
     return response.choices[0].message.content
