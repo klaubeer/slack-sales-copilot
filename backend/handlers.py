@@ -1,31 +1,34 @@
 from backend.slack_agent import app
-from openai import OpenAI
+from backend.sales_ai.generate_reply import generate_reply
+from backend.sales_ai.battlecards import generate_battlecard
+from backend.sales_ai.analyze_message import analyze_message
 
-client = OpenAI()
 
-@app.event("message")
-def handle_message(body, say):
+@app.message("/reply")
+def reply_handler(message, say):
 
-    event = body["event"]
+    text = message["text"].replace("/reply", "").strip()
 
-    if event.get("subtype") == "bot_message":
-        return
+    response = generate_reply(text)
 
-    text = event.get("text")
+    say(response)
 
-    if not text:
-        return
 
-    say("🤖 Pensando...")
+@app.message("/battlecard")
+def battlecard_handler(message, say):
 
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {"role": "system", "content": "You are a helpful sales copilot."},
-            {"role": "user", "content": text}
-        ]
-    )
+    competitor = message["text"].replace("/battlecard", "").strip()
 
-    answer = response.choices[0].message.content
+    response = generate_battlecard(competitor)
 
-    say(answer)
+    say(response)
+
+
+@app.message("/analyze")
+def analyze_handler(message, say):
+
+    text = message["text"].replace("/analyze", "").strip()
+
+    response = analyze_message(text)
+
+    say(response)
