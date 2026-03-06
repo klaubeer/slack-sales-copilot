@@ -5,14 +5,29 @@ client = OpenAI()
 def generate_battlecard(competitor):
 
     prompt = f"""
-Create a sales battlecard against {competitor}.
+Você é um especialista em Revenue Enablement.
 
-Return:
+Crie um battlecard de vendas contra o concorrente: {competitor}.
 
-Competitor summary
-Weaknesses
-How to position against them
-One killer question to ask the prospect
+Responda em português usando esta estrutura:
+
+RESUMO DO CONCORRENTE
+(explicação curta)
+
+QUANDO ELE GANHA NEGÓCIOS
+(3 situações comuns)
+
+PONTOS FRACOS
+(3-5 fraquezas)
+
+COMO SE POSICIONAR
+(como vender contra ele)
+
+FRASE PARA USAR NA CALL
+(exemplo de frase que o vendedor pode falar)
+
+PERGUNTA DE DESCOBERTA
+(pergunta que expõe a fraqueza do concorrente)
 """
 
     response = client.chat.completions.create(
