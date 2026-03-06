@@ -8,16 +8,21 @@ def handle_message(body, say):
 
     event = body["event"]
 
-    if "bot_id" in event:
+    if event.get("subtype") == "bot_message":
         return
 
-    text = event.get("text", "")
+    text = event.get("text")
+
+    if not text:
+        return
+
+    say("🤖 Pensando...")
 
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
-            {"role":"system","content":"You are a helpful sales copilot."},
-            {"role":"user","content":text}
+            {"role": "system", "content": "You are a helpful sales copilot."},
+            {"role": "user", "content": text}
         ]
     )
 
