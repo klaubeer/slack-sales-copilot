@@ -5,26 +5,31 @@ client = OpenAI()
 def generate_reply(text):
 
     prompt = f"""
-You are a senior B2B sales rep.
+Você é um vendedor SaaS B2B com mais de 10 anos de experiência.
 
-A prospect sent this message:
+Um prospect enviou a seguinte mensagem:
 
 {text}
 
-Your task:
-- identify the objection
-- write a reply that moves the deal forward
-- keep it short and natural
+Sua tarefa:
 
-Return:
+1. Identificar a objeção principal
+2. Escrever uma resposta curta e natural que avance o deal
+3. Manter tom profissional e amigável
 
-Objection:
-Suggested reply:
-Goal of reply:
+Estrutura da resposta:
+
+TIPO DE OBJEÇÃO
+
+RESPOSTA SUGERIDA
+
+OBJETIVO DA RESPOSTA
+(o que essa resposta tenta alcançar no processo de venda)
 """
 
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
+        temperature=0.3,
         messages=[{"role":"user","content":prompt}]
     )
 
