@@ -5,7 +5,7 @@ Slack Sales Coach é um bot de IA que auxilia vendedores durante o processo de v
 
 A partir do contexto de uma oportunidade (empresa, estágio do funil, objeções, concorrentes), o bot analisa o cenário e sugere:
 
-- sinais de risco no negócio
+- sinais de risco no negócio 
 - estratégia de abordagem
 - próximo passo recomendado no processo de vendas
 
