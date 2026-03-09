@@ -8,86 +8,110 @@ from backend.sales_ai.analyze_call import analyze_call
 from openai import OpenAI
 import json
 
-client = OpenAI()
+cliente = OpenAI()
+
+INTENTS_VALIDOS = ["reply", "battlecard", "analyze", "call"]
 
 
-def route_intent(text):
-    """
-    Classifica a intenção da mensagem usando LLM.
-    Retorna uma das intenções:
-    reply | battlecard | analyze | call
-    """
+def classificar_intencao(texto):
 
     prompt = f"""
-Você é um classificador de intenções para um assistente de vendas.
+Você é um classificador de intenção para um assistente de vendas.
 
-Classifique a mensagem abaixo em uma das intenções:
+Classifique a mensagem em UMA das intenções abaixo:
 
-reply → quando o vendedor quer ajuda para responder um cliente
-battlecard → quando quer ajuda para competir contra um concorrente
-analyze → quando quer analisar uma mensagem de cliente
-call → quando envia um trecho de call de vendas
+reply -> ajudar a escrever uma resposta para um cliente
+battlecard -> objeção de concorrente ou posicionamento competitivo
+analyze -> analisar mensagem ou conversa de vendas
+call -> analisar transcrição de call de vendas
 
-Mensagem:
-{text}
+Retorne APENAS JSON válido.
 
-Responda em JSON neste formato:
+Exemplo:
 
 {{
- "intent": "reply | battlecard | analyze | call"
+ "intent": "reply"
 }}
+
+Mensagem:
+{texto}
 """
 
-    response = client.chat.completions.create(
+    resposta = cliente.chat.completions.create(
         model="gpt-4.1-mini",
         temperature=0,
         messages=[{"role": "user", "content": prompt}]
     )
 
-    content = response.choices[0].message.content
+    conteudo = resposta.choices[0].message.content
+
+    print("\n[SAÍDA BRUTA DO CLASSIFICADOR]")
+    print(conteudo)
 
     try:
-        parsed = json.loads(content)
-        return parsed.get("intent", "analyze")
-    except:
-        return "analyze"
+
+        dados = json.loads(conteudo)
+        intent = dados.get("intent", "analyze")
+
+        if intent not in INTENTS_VALIDOS:
+            print("Intent inválido retornado. Usando fallback analyze.")
+            intent = "analyze"
+
+        return intent, resposta.usage.total_tokens
+
+    except Exception as erro:
+
+        print("Erro ao interpretar JSON:", erro)
+        return "analyze", resposta.usage.total_tokens
 
 
 @app.event("message")
-def handle_message(body, say):
+def tratar_mensagem(body, say):
 
-    event = body.get("event", {})
+    evento = body.get("event", {})
 
-    # evita loop com mensagens do próprio bot
-    if event.get("subtype") == "bot_message":
+    if evento.get("subtype") == "bot_message":
         return
 
-    text = event.get("text", "").strip()
+    texto = evento.get("text", "").strip()
 
-    if not text:
+    if not texto:
         return
 
     try:
 
-        intent = route_intent(text)
+        intent, tokens_classificador = classificar_intencao(texto)
+
+        print("\n[ROTEADOR DE IA]")
+        print("mensagem:", texto)
+        print("intent detectado:", intent)
+        print("tokens classificador:", tokens_classificador)
 
         if intent == "reply":
-            result = generate_reply(text)
+
+            print("→ enviando para generate_reply")
+            resultado = generate_reply(texto)
 
         elif intent == "battlecard":
-            result = generate_battlecard(text)
+
+            print("→ enviando para battlecards")
+            resultado = generate_battlecard(texto)
 
         elif intent == "call":
-            result = analyze_call(text)
+
+            print("→ enviando para analyze_call")
+            resultado = analyze_call(texto)
 
         else:
-            result = analyze_message(text)
 
-        say(result)
+            print("→ enviando para analyze_message")
+            resultado = analyze_message(texto)
 
-    except Exception as e:
+        say(resultado)
 
-        print("Erro no handler:", e)
+    except Exception as erro:
+
+        print("Erro no handler:", erro)
 
         say(
             "Tive um problema ao processar sua mensagem. "
