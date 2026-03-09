@@ -1,5 +1,5 @@
 from openai import OpenAI
-
+ 
 client = OpenAI()
 
 def analyze_message(text):
