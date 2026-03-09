@@ -2,7 +2,7 @@ from openai import OpenAI
 
 client = OpenAI()
 
-def generate_reply(text):
+def generate_reply(text): 
 
     prompt = f"""
 Você é um vendedor SaaS B2B experiente.
