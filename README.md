@@ -21,3 +21,7 @@ slack-sales-coach
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
+
+## Autor
+
+Klauber Fischer
