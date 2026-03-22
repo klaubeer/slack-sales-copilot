@@ -1,7 +1,7 @@
 from openai import OpenAI
 
 client = OpenAI()
-
+ 
 def generate_battlecard(competitor):
 
     prompt = f"""

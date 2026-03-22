@@ -1,6 +1,6 @@
 from openai import OpenAI
 
-client = OpenAI()
+client = OpenAI() 
 
 def analyze_call(transcript):
 
