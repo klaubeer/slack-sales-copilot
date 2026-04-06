@@ -1,3 +1,5 @@
+[English version here](README-EN.md)
+
 <div align="center">
 
 # 🤖 Slack Sales Copilot
